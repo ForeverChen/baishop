@@ -5,7 +5,7 @@
 			<attribute name="owner.project.facets" value="jst.web"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry including="**/*.java" kind="src" output="WebContent/WEB-INF/classes" path="src">
+	<classpathentry kind="src" output="WebContent/WEB-INF/classes" path="src">
 		<attributes>
 			<attribute name="optional" value="true"/>
 			<attribute name="maven.pomderived" value="true"/>
