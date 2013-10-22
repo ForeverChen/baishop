@@ -2,5 +2,6 @@
 <project-modules id="moduleCoreId" project-version="1.5.0">
     <wb-module deploy-name="bai-srv-ucenter">
         <wb-resource deploy-path="/" source-path="/src-service"/>
+        <wb-resource deploy-path="/" source-path="/src-dao"/>
     </wb-module>
 </project-modules>

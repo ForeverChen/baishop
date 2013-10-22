@@ -3,6 +3,7 @@
     <wb-module deploy-name="kwp-oauth">
         <wb-resource deploy-path="/" source-path="/target/m2e-wtp/web-resources"/>
         <wb-resource deploy-path="/" source-path="/WebContent" tag="defaultRootSource"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src"/>
         <dependent-module archiveName="bai-srv-ucenter-1.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/bai-srv-ucenter/bai-srv-ucenter">
             <dependency-type>uses</dependency-type>
         </dependent-module>
