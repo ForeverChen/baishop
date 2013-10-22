@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:sec="http://www.springframework.org/schema/security" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" 
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="
+	http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context-3.0.xsd
+	http://www.springframework.org/schema/aop    
+	http://www.springframework.org/schema/aop/spring-aop-3.0.xsd   
+	http://www.springframework.org/schema/tx    
+	http://www.springframework.org/schema/tx/spring-tx-3.0.xsd   
+	http://www.springframework.org/schema/mvc 
+	http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
+	http://www.springframework.org/schema/security  
+    http://www.springframework.org/schema/security/spring-security-3.0.xsd
+	">
+
+	<!-- 
+	启用安全性，让casAuthenticationEntryPoint处理所有截获的网址。
+	CAS_FILTER需要在合适的位置是在过滤器链。
+	 -->
+	<sec:http entry-point-ref="casAuthenticationEntryPoint" auto-config="true">
+		<!-- 需要认证过滤的地址 -->
+		<sec:intercept-url pattern="/admin/**" access="ROLE_ADMIN" requires-channel="any" />
+		<sec:intercept-url pattern="/**" access="ROLE_ADMIN,ROLE_USER" requires-channel="any" />
+		
+		<!-- 不需要认证过滤的地址 --> 
+		<sec:intercept-url pattern="/WEB-RES/**" filters="none" />
+		<sec:intercept-url pattern="/favicon.ico" filters="none" />
+		<sec:intercept-url pattern="/*.html" filters="none" />
+		
+        <!-- 自动登录 
+        <sec:remember-me />-->
+		
+		<!-- 自定义拦截器 -->
+		<sec:custom-filter before="FILTER_SECURITY_INTERCEPTOR" ref="filterSecurityInterceptor" />
+        <sec:custom-filter before="CAS_FILTER" ref="casSingleLogoutFilter" />  
+        <sec:custom-filter before="LOGOUT_FILTER" ref="casServerSingleLogoutFilter" />
+        <sec:custom-filter position="CAS_FILTER" ref="casAuthenticationFilter" />
+	</sec:http>
+	
+	
+	<!-- CAS认证请求的入口点,CAS登录页面重定向到CAS的loginUrl。-->
+	<bean id="casAuthenticationEntryPoint" class="org.springframework.security.cas.web.CasAuthenticationEntryPoint">
+		<property name="loginUrl" value="${app.cas.url}/login"></property>
+		<property name="serviceProperties" ref="serviceProperties"></property>
+	</bean>
+	
+	<!-- CAS服务相关的属性 -->
+	<bean id="serviceProperties" class="org.springframework.security.cas.ServiceProperties">
+		<property name="service" value="${app.url}/login"></property>
+		<property name="sendRenew" value="false" />
+	</bean>
+	
+	<!--  CAS认证管理器  --> 
+	<sec:authentication-manager alias ="authenticationManager" > 
+		<sec:authentication-provider ref="casAuthenticationProvider" />
+	</sec:authentication-manager>
+	
+	<!-- CAS认证服务提供者 -->
+	<bean id="casAuthenticationProvider" class="org.springframework.security.cas.authentication.CasAuthenticationProvider">
+		<property name="serviceProperties" ref="serviceProperties"></property>
+		<property name="ticketValidator">
+			<bean class="org.jasig.cas.client.validation.Cas20ServiceTicketValidator">
+				<constructor-arg index="0" value="${app.cas.url}" />
+			</bean>
+		</property>
+		<property name="authenticationUserDetailsService">
+			<bean class="org.springframework.security.core.userdetails.UserDetailsByNameServiceWrapper">
+				<property name="userDetailsService" ref="adminsService"/>  
+			</bean>
+		</property>
+		<property name="key" value="cas"></property>
+	</bean>	
+	
+	<!-- CAS认证拦截器 -->
+	<bean id="casAuthenticationFilter" class="org.springframework.security.cas.web.CasAuthenticationFilter">
+		<property name="authenticationManager" ref="authenticationManager"/>
+        <property name="authenticationSuccessHandler">
+            <bean class="org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler">
+                <property name="defaultTargetUrl" value="/"/>
+        		<property name="targetUrlParameter" value="redirect"/>
+            </bean>
+        </property>
+		<property name="filterProcessesUrl" value="/login"/> 
+	</bean>
+	
+    <!-- CAS注销客户端 -->  
+    <bean id="casSingleLogoutFilter" class="org.jasig.cas.client.session.SingleSignOutFilter" />  
+          
+    <!-- CAS注销服务器端 -->  
+    <bean id="casServerSingleLogoutFilter" class="org.springframework.security.web.authentication.logout.LogoutFilter">  
+        <constructor-arg value="${app.cas.url}/logout?service=${app.url}" />  
+        <constructor-arg>  
+            <bean class="org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler" />  
+        </constructor-arg>  
+        <property name="filterProcessesUrl" value="/logout" />  
+    </bean>  
+	
+    <!-- 用户授权拦截器 -->
+    <bean id="filterSecurityInterceptor" class="com.baixc.ucenter.web.security.CasFilterSecurityInterceptor">
+        <property name="authenticationManager" ref="authenticationManager" />
+        <property name="accessDecisionManager">
+		    <!-- 访问决策器，决定某个用户具有的角色，是否有足够的权限去访问某个资源 -->
+		    <bean class="com.baixc.ucenter.web.security.CasAccessDecisionManager" />        	
+        </property>
+        <property name="securityMetadataSource">
+		    <!-- 资源源数据定义，即定义某一资源可以被哪些角色访问 -->
+		    <bean class="com.baixc.ucenter.web.security.CasFilterInvocationSecurityMetadataSource"/>
+        </property>
+    </bean>
+    
+</beans>

@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" 
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:sec="http://www.springframework.org/schema/security" 
+	xmlns:val="http://www.springmodules.org/validation/bean"
+	xsi:schemaLocation="
+	http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context-3.0.xsd
+	http://www.springframework.org/schema/aop    
+	http://www.springframework.org/schema/aop/spring-aop-3.0.xsd   
+	http://www.springframework.org/schema/tx    
+	http://www.springframework.org/schema/tx/spring-tx-3.0.xsd   
+	http://www.springframework.org/schema/security  
+    http://www.springframework.org/schema/security/spring-security-3.0.xsd
+    http://www.springmodules.org/validation/bean 
+    http://www.springmodules.org/validation/bean/validation.xsd
+	">
+	
+	<!-- =================================数据库================================= -->	
+
+	<!--SqlMapClient模版类  --> 
+	<bean id="sqlMapClientCommons" class="org.springframework.orm.ibatis.SqlMapClientTemplate">
+		<property name="sqlMapClient">
+			<bean class="org.springframework.orm.ibatis.SqlMapClientFactoryBean">
+				<property name="configLocation">
+		    		<value>classpath:com/baixc/commons/dao/sqlmap-config.xml</value>
+				</property> 
+				<property name="dataSource">
+					<!-- 数据源 -->
+			    	<bean class="com.atomikos.jdbc.AtomikosDataSourceBean" init-method="init" destroy-method="close">
+						<property name="uniqueResourceName" value="baixc/commons" />
+						<property name="xaDataSourceClassName" value="com.mysql.jdbc.jdbc2.optional.MysqlXADataSource" />
+						<property name="xaProperties">
+							<props>
+								<prop key="url">${jdbc.commons.url}</prop>
+								<prop key="user">${jdbc.commons.user}</prop>
+								<prop key="password">${jdbc.commons.password}</prop>
+							</props>
+						</property>
+						<property name="maxPoolSize">
+							<value>${jdbc.commons.maxPoolSize}</value>
+						</property>
+						<property name="minPoolSize" value="5" />
+						<property name="testQuery" value="select 1" />
+					</bean>
+				</property>       
+			</bean>
+		</property>
+	</bean>
+	
+	
+	<!-- JTA 事务管理器 -->
+	<bean id="transactionManager" class="org.springframework.transaction.jta.JtaTransactionManager">
+		<property name="transactionManager">
+			<bean class="com.atomikos.icatch.jta.UserTransactionManager"
+					init-method="init" destroy-method="close">
+				<property name="forceShutdown" value="true" />
+			</bean>
+		</property>
+		<property name="userTransaction">
+			<bean class="com.atomikos.icatch.jta.UserTransactionImp">
+				<property name="transactionTimeout" value="300" />
+			</bean>
+		</property>
+	</bean>	
+	
+	<!-- 声明式注解事务配置 -->
+	<tx:annotation-driven transaction-manager="transactionManager"/> 
+	<aop:aspectj-autoproxy/>
+	
+	<!-- iBATIS Memcached缓存 -->
+	<bean class="com.baixc.framework.ibatis.cache.MemcachedController">
+		<property name="memcached">
+			<bean class="net.rubyeye.xmemcached.utils.XMemcachedClientFactoryBean" destroy-method="shutdown">
+				<property name="servers">
+					<value>${memcached.ibatis.servers}</value>
+				</property>
+				<property name="connectionPoolSize" value="5" />
+				<property name="sessionLocator">
+					<bean class="net.rubyeye.xmemcached.impl.KetamaMemcachedSessionLocator" />
+				</property>
+				<property name="transcoder">
+					<bean class="net.rubyeye.xmemcached.transcoders.SerializingTranscoder" />
+				</property>
+				<property name="bufferAllocator">
+					<bean class="net.rubyeye.xmemcached.buffer.SimpleBufferAllocator" />
+				</property>
+			</bean>
+		</property>
+	</bean>
+	
+</beans>

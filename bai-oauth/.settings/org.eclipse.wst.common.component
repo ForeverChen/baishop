@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-modules id="moduleCoreId" project-version="1.5.0">
+    <wb-module deploy-name="kwp-oauth">
+        <wb-resource deploy-path="/" source-path="/target/m2e-wtp/web-resources"/>
+        <wb-resource deploy-path="/" source-path="/WebContent" tag="defaultRootSource"/>
+        <dependent-module archiveName="bai-srv-ucenter-1.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/bai-srv-ucenter/bai-srv-ucenter">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="bai-srv-commons-1.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/bai-srv-commons/bai-srv-commons">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="bai-framework-1.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/bai-framework/bai-framework">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <property name="java-output-path" value="/kwp-oauth/WebContent/WEB-INF/classes"/>
+        <property name="context-root" value="oauth"/>
+    </wb-module>
+</project-modules>

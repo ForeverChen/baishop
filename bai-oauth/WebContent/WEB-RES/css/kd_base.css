@@ -1,0 +1,38 @@
+
+@import url(base.css);
+/*--- Common Style Base ---*/
+    body{background:#fff;color:#333;font:12px/1.5 '微软雅黑','Arial','宋体';}
+    input,select,textarea{color:#666;} 
+/*--- font type setting ---*/
+	.k_c000{color:#000;}  /* 黑色 */
+	.k_cf00{color:#f00;}  /* 红色 */
+	.k_cb00{color:#b00;}  /* 暗红色 */
+	.k_cd00{color:#d00;}  /* 亮红色 */
+	.k_c069{color:#069;}  /* 深蓝色 */
+	.k_c666{color:#666;}  /* 灰色 */
+	.k_c999{color:#999;}  /* 浅灰色 */
+/*--- link type setting ---*/
+	a:link,a:visited{color:#333;text-decoration:none;}
+	a:hover,a:active{color:#b00;}
+	.k_acblue:link,.k_acblue:hover,.k_acblue:visited{color: #00b4ff;}
+	.k_acbk:link,.k_acbk:hover,.k_acbk:visited{color: #000;}
+/*--- border type setting ---*/
+	.k_bdlr568{border-left:1px solid #d5d6d8;border-right:1px solid #d5d6d8;}
+	.k_bdb568{border-bottom:1px solid #d5d6d8;}
+	.k_bdr568{border-right:1px solid #d5d6d8;}
+	.k_bd568{border:1px solid #d5d6d8;}
+
+	.res_Content{width:480px;}
+	.k_bgeee{background:#eee;}
+/*--- common sprites ---*/
+	.k_spes{background:url(../../images/com_sprites.png) no-repeat -9999px;}
+
+
+/*
+@media screen and (min-width:241px) and (max-width:360px) {
+}
+@media screen and (min-width:361px) and (max-width:480px) {
+}
+@media screen and (min-width:481px) and (max-width:640px) {
+}
+*/

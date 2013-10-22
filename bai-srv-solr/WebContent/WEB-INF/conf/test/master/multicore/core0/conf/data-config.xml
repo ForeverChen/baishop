@@ -1,0 +1,115 @@
+<dataConfig>
+	<dataSource type="JdbcDataSource" driver="com.mysql.jdbc.Driver"
+		url="jdbc:mysql://192.168.11.248:3306/baixc?useUnicode=true&amp;characterEncoding=utf8"
+		user="root" password="password" transactionIsolation="TRANSACTION_READ_COMMITTED" />
+	<document>
+		<entity name="products"
+			query="select * from (SELECT
+       (select group_concat(cast(coop_id as char) )
+        from baixc.kd3_my_supershop_template st
+            join
+                (select 
+                    c.id as id
+                    FROM
+                        baixc.kd3_coop_Cooperator AS c, baixc.baixc_myshop_super as s, baixc.baixc_myshop m
+                    where
+                        ((c.id = s.coop_Id and s.shop_space_id = m.id
+                                           and m.publish = 1))
+                union all select 1) cpd ON cpd.id = st.coop_id
+    where st.diy_id = pt.id and st.diy_type = 1) coopId,
+       1 as type,
+       pt.id id,
+       pt.id tid,
+       pt.name,
+       pt.name name2,
+       baixc.categoryPath(pt.template_type) category,
+       baixc.categoryNames(pt.template_type) categoryName,
+       trim(',' from ifnull(pt.design_type,'')) theme,
+       ifnull(baixc.allThemeName(pt.design_type),'') themeName,
+       ifnull(pt.specific_description, '') subname,
+       (select ifnull(kc.value,'')
+            from  baixc.kd3_core_mcode kc
+         where kc.type = pt.brand
+                  and kc.mcode_key = 'KD_TEMPLATE_BRAND_TYPE') brand,
+        (case ifnull(pt.brand,0) when '' then 0 else ifnull(pt.brand,0) end) attrBrand,
+        pg.base_price  price,
+        baixc.price(pg.base_price) attrPrice,
+        pt.create_time upShelfTime,
+        pt.is_to_mobile toMobile,
+        (SELECT 
+                    ifnull(si.url, concat(i.url, '.image?type=preview'))
+                from
+                    kd2_tbl_product_template_sample_image s, image i, kd3_my_supershop_template super
+                left join kd3_scene_image_info si ON (si.target_id = super.id AND si.type = 2 AND si.size_type = 2)
+                WHERE
+                    super.diy_type = 1 AND super.template_id = pt.id AND pt.id = pg.template_id 
+                      AND pg.id = s.template_view_group_id AND s.default_flag = 1
+                      AND s.sample_image_id = i.id
+                limit 1) picture,
+        (select sell_count from baixc.kd3_product_sellcount_stats ss
+            where ss.product_id=pt.id and type=1) sales,
+        pt.sub_state subState
+FROM
+    baixc.product_template pt,baixc.kd2_tbl_product_template_view_group pg
+WHERE
+   pt.accessories_type != 1 and pg.template_id=pt.id
+    AND ((pt.state = 0 and pt.sub_state = 0 ) or (pt.state = 0 and pt.sub_state = 1 )
+			or (pt.state = 1 and pt.sub_state=3 and pt.repeal_date > DATE_ADD(now(),INTERVAL -3 DAY)))
+
+union all
+
+SELECT
+       (select group_concat(cast(coop_id as char))
+        from baixc.kd3_my_supershop_template st
+            join
+                (select 
+                    c.id as id
+                    FROM
+                        baixc.kd3_coop_Cooperator AS c, baixc.baixc_myshop_super as s, baixc.baixc_myshop m
+                    where
+                        ((c.id = s.coop_Id and s.shop_space_id = m.id
+                                           and m.publish = 1))
+                union all select 1) cpd ON cpd.id = st.coop_id
+    where st.diy_id = dt.id and st.diy_type = 2) coopId,
+       2 as type,
+       dt.id id,
+       pt.id tid,
+       dt.name,
+       dt.name name2,
+       baixc.categoryPath(pt.template_type) category,
+       baixc.categoryNames(pt.template_type) categoryName,
+       trim(',' from ifnull(dt.theme_id,'')) theme,
+       ifnull(baixc.allThemeName(dt.theme_id),'') themeName,
+       ifnull(dt.specific_description, '') subname,
+       (select ifnull(kc.value,'')
+            from  baixc.kd3_core_mcode kc
+         where kc.type = pt.brand
+                  and kc.mcode_key = 'KD_TEMPLATE_BRAND_TYPE') brand,
+        (case ifnull(pt.brand,0) when '' then 0 else ifnull(pt.brand,0) end) attrBrand,
+        pg.base_price  price,
+        baixc.price(pg.base_price) attrPrice,
+        dt.create_time upShelfTime,
+        dt.is_to_mobile toMobile,
+        (SELECT 
+                    ifnull(si.url, concat(i.url, '.image?type=preview'))
+                FROM
+                    image i, kd3_scene_image_info si, kd3_my_supershop_template st
+                LEFT JOIN kd3_scene_image_info sii 
+ON (st.id = sii.target_id AND sii.type = 3 AND sii.size_type = 2)
+                WHERE
+                    st.diy_type = 2 and dt.id = si.target_id 
+AND si.type = 1 AND si.size_type = 2 AND st.diy_id = dt.id AND dt.complex_image_id = i.id
+                limit 1) picture,
+        (select sell_count from baixc.kd3_product_sellcount_stats ss
+            where ss.product_id=dt.id and type=2) sales,
+       dt.sub_state subState
+FROM
+    baixc.kd2_design_template dt,baixc.product_template pt,
+    baixc.kd2_tbl_product_template_view_group pg
+WHERE
+    pt.id = dt.template_id and pg.template_id=pt.id and pt.accessories_type != 1
+AND ((dt.status = 0 and dt.sub_state = 0) or (dt.status = 0 and dt.sub_state = 1) 
+or (dt.status = 1 and dt.sub_state = 3 and dt.repeal_date > DATE_ADD(now(), INTERVAL - 3 DAY))))a where coopId is not null;">
+		</entity>
+	</document>
+</dataConfig>

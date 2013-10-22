@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- Licensed to the Apache Software Foundation (ASF) under one or more contributor 
+	license agreements. See the NOTICE file distributed with this work for additional 
+	information regarding copyright ownership. The ASF licenses this file to 
+	You under the Apache License, Version 2.0 (the "License"); you may not use 
+	this file except in compliance with the License. You may obtain a copy of 
+	the License at http://www.apache.org/licenses/LICENSE-2.0 Unless required 
+	by applicable law or agreed to in writing, software distributed under the 
+	License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS 
+	OF ANY KIND, either express or implied. See the License for the specific 
+	language governing permissions and limitations under the License. -->
+
+<!-- http://wiki.apache.org/solr/SolrConfigXml -->
+<config>
+	<luceneMatchVersion>LUCENE_36</luceneMatchVersion>
+
+	<!-- 默认位置: ${solr.data.dir:./solr/data} -->
+	<!-- <dataDir>/home/regulus/data/</dataDir> -->
+
+	<!-- 索引文件系统. -->
+	<directoryFactory name="DirectoryFactory" class="solr.NIOFSDirectoryFactory" />
+
+	<!-- 查询缓存控制 -->
+	<query>
+		<filterCache class="solr.FastLRUCache" size="3000" initialSize="2500" autowarmCount="1800" />
+		<queryResultCache class="solr.LRUCache" size="512" initialSize="512" autowarmCount="0" />
+		<documentCache class="solr.LRUCache" size="2500" initialSize="2500" />
+		<listener event="newSearcher" class="solr.QuerySenderListener">
+			<arr name="queries">
+				<lst>
+					<str name="q">手链</str>
+					<str name="start">0</str>
+					<str name="rows">10</str>
+				</lst>
+				<lst>
+					<str name="q">项链</str>
+					<str name="start">0</str>
+					<str name="rows">10</str>
+				</lst>
+				<lst>
+					<str name="q">杯子</str>
+					<str name="start">0</str>
+					<str name="rows">10</str>
+				</lst>
+			</arr>
+		</listener>
+		<listener event="firstSearcher" class="solr.QuerySenderListener">
+			<arr name="queries">
+				<lst>
+					<str name="q">手链</str>
+					<str name="start">0</str>
+					<str name="rows">10</str>
+				</lst>
+				<lst>
+					<str name="q">项链</str>
+					<str name="start">0</str>
+					<str name="rows">10</str>
+				</lst>
+				<lst>
+					<str name="q">杯子</str>
+					<str name="start">0</str>
+					<str name="rows">10</str>
+				</lst>
+			</arr>
+		</listener>
+		<queryResultWindowSize>50</queryResultWindowSize>
+		<maxWarmingSearchers>2</maxWarmingSearchers>
+	</query>
+
+	<updateHandler class="solr.DirectUpdateHandler2" />
+
+	<requestDispatcher handleSelect="true">
+		<requestParsers enableRemoteStreaming="false" multipartUploadLimitInKB="2048" />
+		<httpCaching never304="true" />
+	</requestDispatcher>
+
+	<requestHandler name="/select" class="solr.SearchHandler">
+		<lst name="defaults">
+			<str name="echoParams">explicit</str>
+			<int name="rows">10</int>
+			<!-- lucene edismax dismax kdismax -->
+			<str name="defType">kdismax</str>
+			<!-- <str name="qs">100</str> -->
+			<str name="qf">
+				name^5.0 name2^3.0 subname^2.0 text^1.0
+			</str>
+			<str name="fl">
+				id,type,name,subname,price,sales,picture,tid,subState,score
+			</str>
+			<!-- Highlighting defaults -->
+			<str name="hl">on</str>
+			<str name="hl.fl">name2</str>
+			<str name="hl.mergeContiguous">true</str>
+			<str name="hl.usePhraseHighlighter">false</str>
+			<str name="hl.simple.pre">&lt;span class="k_cb00"&gt;</str>
+			<str name="hl.simple.post">&lt;/span&gt;</str>
+			<!--Facet defaults -->
+			<str name="facet">on</str>
+			<str name="facet.field">category</str>
+			<str name="facet.field">theme</str>
+			<str name="facet.field">attrBrand</str>
+			<str name="facet.field">attrPrice</str>
+		</lst>
+	</requestHandler>
+
+	<requestHandler name="/suggest" class="solr.SearchHandler">
+		<lst name="defaults">
+			<str name="spellcheck">true</str>
+			<str name="spellcheck.dictionary">suggest</str>
+			<str name="spellcheck.onlyMorePopular">true</str>
+			<str name="spellcheck.count">5</str>
+			<str name="spellcheck.collate">true</str>
+		</lst>
+		<arr name="components">
+			<str>suggest</str>
+		</arr>
+	</requestHandler>
+
+	<requestHandler name="/dataimport" class="solr.DataImportHandler">
+		<lst name="defaults">
+			<str name="config">data-config.xml</str>
+		</lst>
+	</requestHandler>
+
+	<!-- ping/healthcheck -->
+	<requestHandler name="/admin/ping" class="solr.PingRequestHandler">
+		<lst name="invariants">
+			<str name="q">solrpingquery</str>
+		</lst>
+		<lst name="defaults">
+			<str name="echoParams">all</str>
+		</lst>
+	</requestHandler>
+	
+	<!-- Echo the request contents back to the client -->
+	<requestHandler name="/debug/dump" class="solr.DumpRequestHandler">
+		<lst name="defaults">
+			<str name="echoParams">explicit</str>
+			<str name="echoHandler">true</str>
+		</lst>
+	</requestHandler>
+
+	<requestHandler name="standard" class="solr.StandardRequestHandler" default="true" />
+	<requestHandler name="/update" class="solr.XmlUpdateRequestHandler" />
+	<requestHandler name="/admin/" class="org.apache.solr.handler.admin.AdminHandlers" />
+
+	<searchComponent name="suggest" class="solr.SpellCheckComponent">
+		<lst name="spellchecker">
+			<str name="name">suggest</str>
+			<str name="classname">org.apache.solr.spelling.suggest.Suggester</str>
+			<str name="lookupImpl">org.apache.solr.spelling.suggest.tst.TSTLookup</str>
+			<str name="field">name</str>
+			<float name="threshold">0.00000005</float>
+			<str name="buildOnCommit">true</str>
+			<!-- <str name="sourceLocation">american-english</str> -->
+		</lst>
+	</searchComponent>
+	
+
+	<!-- 主从复制，主服务器配置 -->
+	<requestHandler name="/replication" class="solr.ReplicationHandler">
+		<lst name="master">
+			<str name="replicateAfter">commit</str>
+			<str name="replicateAfter">startup</str>
+			<str name="confFiles">schema.xml</str>
+		</lst>
+	</requestHandler>
+
+	<!-- 主从复制，从服务器配置 -->
+<!-- 	<requestHandler name="/replication" class="solr.ReplicationHandler"> -->
+<!-- 		<lst name="slave"> -->
+<!-- 			<str name="masterUrl">http://localhost:8080/solr/core0/replication/</str> -->
+<!-- 			<str name="pollInterval">00:15:00</str> -->
+<!-- 		</lst> -->
+<!-- 	</requestHandler> -->
+
+	<!-- config for the admin interface -->
+	<admin>
+		<defaultQuery>*:*</defaultQuery>
+	</admin>
+
+</config>
+

@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="bai_user" >
+
+  <resultMap id="resultMap" class="com.baixc.ucenter.model.user.User" >
+    <result column="user_id" property="userId" jdbcType="BIGINT" />
+    <result column="username" property="username" jdbcType="VARCHAR" />
+    <result column="password" property="password" jdbcType="VARCHAR" />
+    <result column="nicename" property="nicename" jdbcType="VARCHAR" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+    <result column="mobile" property="mobile" jdbcType="VARCHAR" />
+    <result column="telephone" property="telephone" jdbcType="VARCHAR" />
+    <result column="sex" property="sex" jdbcType="TINYINT" />
+    <result column="birthday" property="birthday" jdbcType="TIMESTAMP" />
+    <result column="pay_points" property="payPoints" jdbcType="INTEGER" />
+    <result column="rank_points" property="rankPoints" jdbcType="INTEGER" />
+    <result column="user_rank_id" property="userRankId" jdbcType="INTEGER" />
+    <result column="address_id" property="addressId" jdbcType="INTEGER" />
+    <result column="reg_time" property="regTime" jdbcType="TIMESTAMP" />
+    <result column="last_update_time" property="lastUpdateTime" jdbcType="TIMESTAMP" />
+    <result column="last_login_ip" property="lastLoginIp" jdbcType="VARCHAR" />
+    <result column="visit_count" property="visitCount" jdbcType="BIGINT" />
+    <result column="is_subscribe" property="isSubscribe" jdbcType="TINYINT" />
+    <result column="enabled" property="enabled" jdbcType="TINYINT" />
+    <result column="slave_database" property="slaveDatabase" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  
+  <sql id="select_where_clause" >
+    <dynamic prepend="where">
+		<isNotEmpty prepend="AND" property="userId">
+			user_id = #userId:INTEGER#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="username">
+			username = #username:VARCHAR#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="password">
+			password = #password:VARCHAR#
+		</isNotEmpty>
+		<!-- 网站关键字查询 -->
+		<isNotEmpty prepend="and" property="searchKey" close=")" open="(">
+			username like CONCAT('%',#searchKey:VARCHAR#,'%') or
+			nicename like CONCAT('%',#searchKey:VARCHAR#,'%')
+		</isNotEmpty>
+	</dynamic>
+  </sql>
+  
+  <sql id="select_sort_limit_clause" >
+	<dynamic prepend="order by" >
+      <isNotEmpty property="sort" >
+        $sort$
+      </isNotEmpty>
+	  <isEmpty property="sort" >
+	    enabled desc, reg_time asc
+	  </isEmpty>
+    </dynamic>
+	<dynamic prepend="limit">
+		<isNotNull property="start">
+			$start$,
+			<isNotNull property="limit">
+				$limit$
+			</isNotNull>
+			<isNull property="limit">
+				18446744073709551615
+			</isNull>
+		</isNotNull>
+	</dynamic>
+  </sql>
+
+  <select id="getUser" resultMap="resultMap">
+    select *
+    from bai_user
+	<include refid="select_where_clause" />
+	<include refid="select_sort_limit_clause" />
+  </select>
+
+  <select id="getUserCount" resultClass="long">
+    select count(*) from bai_user
+	<include refid="select_where_clause" />
+  </select>
+
+  <delete id="delUser">
+    delete from bai_user
+    where user_id in
+	<iterate property="userIds" open="(" close=")" conjunction=",">
+		#userIds[]:INTEGER# 
+	</iterate>
+  </delete>
+  
+  <insert id="addUser" parameterClass="com.baixc.ucenter.model.user.User" >
+    insert into bai_user
+    <dynamic prepend="(" >
+      <isNotNull prepend="," property="username" >
+        username
+      </isNotNull>
+      <isNotNull prepend="," property="password" >
+        password
+      </isNotNull>
+      <isNotNull prepend="," property="nicename" >
+        nicename
+      </isNotNull>
+      <isNotNull prepend="," property="email" >
+        email
+      </isNotNull>
+      <isNotNull prepend="," property="mobile" >
+        mobile
+      </isNotNull>
+      <isNotNull prepend="," property="telephone" >
+        telephone
+      </isNotNull>
+      <isNotNull prepend="," property="sex" >
+        sex
+      </isNotNull>
+      <isNotNull prepend="," property="birthday" >
+        birthday
+      </isNotNull>
+      <isNotNull prepend="," property="payPoints" >
+        pay_points
+      </isNotNull>
+      <isNotNull prepend="," property="rankPoints" >
+        rank_points
+      </isNotNull>
+      <isNotNull prepend="," property="userRankId" >
+        user_rank_id
+      </isNotNull>
+      <isNotNull prepend="," property="addressId" >
+        address_id
+      </isNotNull>
+      <isNotNull prepend="," property="regTime" >
+        reg_time
+      </isNotNull>
+      <isNotNull prepend="," property="lastUpdateTime" >
+        last_update_time
+      </isNotNull>
+      <isNotNull prepend="," property="lastLoginIp" >
+        last_login_ip
+      </isNotNull>
+      <isNotNull prepend="," property="visitCount" >
+        visit_count
+      </isNotNull>
+      <isNotNull prepend="," property="isSubscribe" >
+        is_subscribe
+      </isNotNull>
+      <isNotNull prepend="," property="enabled" >
+        enabled
+      </isNotNull>
+      <isNotNull prepend="," property="slaveDatabase" >
+        slave_database
+      </isNotNull>
+      )
+    </dynamic>
+    values
+    <dynamic prepend="(" >
+      <isNotNull prepend="," property="username" >
+        #username:VARCHAR#
+      </isNotNull>
+      <isNotNull prepend="," property="password" >
+        #password:VARCHAR#
+      </isNotNull>
+      <isNotNull prepend="," property="nicename" >
+        #nicename:VARCHAR#
+      </isNotNull>
+      <isNotNull prepend="," property="email" >
+        #email:VARCHAR#
+      </isNotNull>
+      <isNotNull prepend="," property="mobile" >
+        #mobile:VARCHAR#
+      </isNotNull>
+      <isNotNull prepend="," property="telephone" >
+        #telephone:VARCHAR#
+      </isNotNull>
+      <isNotNull prepend="," property="sex" >
+        #sex:TINYINT#
+      </isNotNull>
+      <isNotNull prepend="," property="birthday" >
+        #birthday:TIMESTAMP#
+      </isNotNull>
+      <isNotNull prepend="," property="payPoints" >
+        #payPoints:INTEGER#
+      </isNotNull>
+      <isNotNull prepend="," property="rankPoints" >
+        #rankPoints:INTEGER#
+      </isNotNull>
+      <isNotNull prepend="," property="userRankId" >
+        #userRankId:INTEGER#
+      </isNotNull>
+      <isNotNull prepend="," property="addressId" >
+        #addressId:INTEGER#
+      </isNotNull>
+      <isNotNull prepend="," property="regTime" >
+        #regTime:TIMESTAMP#
+      </isNotNull>
+      <isNotNull prepend="," property="lastUpdateTime" >
+        #lastUpdateTime:TIMESTAMP#
+      </isNotNull>
+      <isNotNull prepend="," property="lastLoginIp" >
+        #lastLoginIp:VARCHAR#
+      </isNotNull>
+      <isNotNull prepend="," property="visitCount" >
+        #visitCount:BIGINT#
+      </isNotNull>
+      <isNotNull prepend="," property="isSubscribe" >
+        #isSubscribe:TINYINT#
+      </isNotNull>
+      <isNotNull prepend="," property="enabled" >
+        #enabled:TINYINT#
+      </isNotNull>
+      <isNotNull prepend="," property="slaveDatabase" >
+        #slaveDatabase:VARCHAR#
+      </isNotNull>
+      )
+    </dynamic>
+    <selectKey resultClass="java.lang.Long" keyProperty="userId" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+  </insert>
+
+  <update id="editUser" parameterClass="com.baixc.ucenter.model.user.User" >
+    update bai_user
+    <dynamic prepend="set" >
+      <isNotNull prepend="," property="username" >
+        username = #username:VARCHAR#
+      </isNotNull>
+      <isNotNull prepend="," property="password" >
+        password = #password:VARCHAR#
+      </isNotNull>
+      <isNotNull prepend="," property="nicename" >
+        nicename = #nicename:VARCHAR#
+      </isNotNull>
+      <isNotNull prepend="," property="email" >
+        email = #email:VARCHAR#
+      </isNotNull>
+      <isNotNull prepend="," property="mobile" >
+        mobile = #mobile:VARCHAR#
+      </isNotNull>
+      <isNotNull prepend="," property="telephone" >
+        telephone = #telephone:VARCHAR#
+      </isNotNull>
+      <isNotNull prepend="," property="sex" >
+        sex = #sex:TINYINT#
+      </isNotNull>
+      <isNotNull prepend="," property="birthday" >
+        birthday = #birthday:TIMESTAMP#
+      </isNotNull>
+      <isNotNull prepend="," property="payPoints" >
+        pay_points = #payPoints:INTEGER#
+      </isNotNull>
+      <isNotNull prepend="," property="rankPoints" >
+        rank_points = #rankPoints:INTEGER#
+      </isNotNull>
+      <isNotNull prepend="," property="userRankId" >
+        user_rank_id = #userRankId:INTEGER#
+      </isNotNull>
+      <isNotNull prepend="," property="addressId" >
+        address_id = #addressId:INTEGER#
+      </isNotNull>
+      <isNotNull prepend="," property="regTime" >
+        reg_time = #regTime:TIMESTAMP#
+      </isNotNull>
+      <isNotNull prepend="," property="lastUpdateTime" >
+        last_update_time = #lastUpdateTime:TIMESTAMP#
+      </isNotNull>
+      <isNotNull prepend="," property="lastLoginIp" >
+        last_login_ip = #lastLoginIp:VARCHAR#
+      </isNotNull>
+      <isNotNull prepend="," property="visitCount" >
+        visit_count = #visitCount:BIGINT#
+      </isNotNull>
+      <isNotNull prepend="," property="isSubscribe" >
+        is_subscribe = #isSubscribe:TINYINT#
+      </isNotNull>
+      <isNotNull prepend="," property="enabled" >
+        enabled = #enabled:TINYINT#
+      </isNotNull>
+      <isNotNull prepend="," property="slaveDatabase" >
+        slave_database = #slaveDatabase:VARCHAR#
+      </isNotNull>
+    </dynamic>
+    where user_id = #userId:BIGINT#
+  </update>
+  
+</sqlMap>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://code.alibabatech.com/schema/dubbo
+        http://code.alibabatech.com/schema/dubbo/dubbo.xsd
+        ">
+ 
+    <!-- 消费方应用名，用于计算依赖关系，不是匹配条件，不要与提供方一样 -->
+	<dubbo:application name="bai-adm-erpcrm-consumer" owner="linpn" />
+ 
+	<!-- 注册中心 -->
+	<dubbo:registry address="${dubbo.registry.address}" />
+	
+	<!-- 服务消费方缺省配置 -->
+	<dubbo:consumer timeout="10000" check="false" />
+    
+   
+	<!-- ===============================服务消费者(bai-srv-ucenter)============================== -->
+	
+	<!-- 后台管理员 -->
+	<dubbo:reference id="adminsService" interface="com.baixc.ucenter.service.admin.AdminsService" version="1.0" />
+	
+	<!-- 后台用户角色 -->
+	<dubbo:reference id="rolesService" interface="com.baixc.ucenter.service.admin.RolesService" version="1.0" />
+	
+	<!-- 后台应用模块-->
+	<dubbo:reference id="modulesService" interface="com.baixc.ucenter.service.admin.ModulesService" version="1.0" />
+	
+	
+	<!-- ===============================服务消费者(bai-srv-common)============================== -->
+	
+	<!-- 系统枚举 -->
+	<dubbo:reference id="enumsService" interface="com.baixc.commons.service.dict.EnumsService" version="1.0" />
+	
+	<!-- 系统参数 -->
+	<dubbo:reference id="paramsService" interface="com.baixc.commons.service.dict.ParamsService" version="1.0" />
+	
+</beans>

@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="bai_admins" >
+
+  <resultMap id="resultMap" class="com.baixc.ucenter.model.admin.Admins" >
+    <result column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="username" property="username" jdbcType="VARCHAR" />
+    <result column="password" property="password" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="code" property="code" jdbcType="VARCHAR" />
+    <result column="sex" property="sex" jdbcType="VARCHAR" />
+    <result column="dept" property="dept" jdbcType="VARCHAR" />
+    <result column="position" property="position" jdbcType="VARCHAR" />
+    <result column="mobile" property="mobile" jdbcType="VARCHAR" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+    <result column="reg_time" property="regTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="enabled" property="enabled" jdbcType="TINYINT" />
+    <result column="{userId=user_id}" property="roles" select="bai_roles.getRoles" />
+    <result column="{userId=user_id}" property="modules" select="bai_modules.getModules" />
+  </resultMap>
+  
+  <sql id="select_where_clause" >
+    <dynamic prepend="where">
+		<isEmpty prepend="AND" property="deleted">
+			deleted = false
+		</isEmpty>
+		<isNotEmpty prepend="AND" property="deleted">
+			deleted = #deleted:BIT#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="userId">
+			user_id = #userId:INTEGER#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="username">
+			username = #username:VARCHAR#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="password">
+			password = #password:VARCHAR#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="name">
+			name = #name:VARCHAR#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="code">
+			code = #code:VARCHAR#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="email">
+			email = #email:VARCHAR#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="enabled">
+			enabled = #enabled:TINYINT#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="roleId">
+			user_id in (select user_id from bai_admins_roles where role_id = #roleId:INTEGER#)
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="moduleId" open="(" close=")">
+			user_id in (
+				select user_id from bai_admins_modules where module_id = #moduleId:INTEGER#
+			)
+			or
+			user_id in (
+				select user_id from bai_admins_roles where role_id in (
+					select role_id from bai_roles_modules where module_id = #moduleId:INTEGER#
+				)
+			)
+		</isNotEmpty>
+		<!-- 网站关键字查询 -->
+		<isNotEmpty prepend="and" property="searchKey" close=")" open="(">
+			username like CONCAT('%',#searchKey:VARCHAR#,'%') or
+			name like CONCAT('%',#searchKey:VARCHAR#,'%') or
+			code like CONCAT('%',#searchKey:VARCHAR#,'%')
+		</isNotEmpty>
+	</dynamic>
+  </sql>
+  
+  <sql id="select_sort_limit_clause" >
+	<dynamic prepend="order by" >
+      <isNotEmpty property="sort" >
+        $sort$
+      </isNotEmpty>
+	  <isEmpty property="sort" >
+	    enabled desc, reg_time asc
+	  </isEmpty>
+    </dynamic>
+	<dynamic prepend="limit">
+		<isNotNull property="start">
+			$start$,
+			<isNotNull property="limit">
+				$limit$
+			</isNotNull>
+			<isNull property="limit">
+				18446744073709551615
+			</isNull>
+		</isNotNull>
+	</dynamic>
+  </sql>
+  
+  
+  <!-- 缓存 -->
+  <cacheModel id="cacheAdmins" type="MEMCACHED" readOnly="true" serialize="false">
+  	<flushInterval minutes="30"/>
+  	<flushOnExecute statement="bai_admins.addAdmins"/>
+  	<flushOnExecute statement="bai_admins.editAdmins"/>
+  	<flushOnExecute statement="bai_admins.delAdmins"/> 
+  	<flushOnExecute statement="bai_roles.addRoles"/>
+  	<flushOnExecute statement="bai_roles.editRoles"/>
+  	<flushOnExecute statement="bai_roles.delRoles"/>  
+  	<flushOnExecute statement="bai_modules.addModules"/>
+  	<flushOnExecute statement="bai_modules.editModules"/>
+  	<flushOnExecute statement="bai_modules.delModules"/>
+  	<flushOnExecute statement="bai_admins_roles.addAdminsRoles"/>
+  	<flushOnExecute statement="bai_admins_roles.delAdminsRoles"/>
+  	<flushOnExecute statement="bai_admins_modules.addAdminsModules"/>
+  	<flushOnExecute statement="bai_admins_modules.delAdminsModules"/>  	
+  	<flushOnExecute statement="bai_roles_modules.addRolesModules"/>
+  	<flushOnExecute statement="bai_roles_modules.delRolesModules"/>
+  </cacheModel>
+  
+  <!-- 缓存记录数 -->
+  <cacheModel id="cacheAdminsCount" type="MEMCACHED" readOnly="true" serialize="false">
+  	<flushInterval minutes="30"/>
+  	<flushOnExecute statement="bai_admins.addAdmins"/>
+  	<flushOnExecute statement="bai_admins.editAdmins"/>
+  	<flushOnExecute statement="bai_admins.delAdmins"/>
+  	<flushOnExecute statement="bai_roles.addRoles"/>
+  	<flushOnExecute statement="bai_roles.editRoles"/>
+  	<flushOnExecute statement="bai_roles.delRoles"/>  
+  	<flushOnExecute statement="bai_modules.addModules"/>
+  	<flushOnExecute statement="bai_modules.editModules"/>
+  	<flushOnExecute statement="bai_modules.delModules"/>
+  	<flushOnExecute statement="bai_admins_roles.addAdminsRoles"/>
+  	<flushOnExecute statement="bai_admins_roles.delAdminsRoles"/>
+  	<flushOnExecute statement="bai_admins_modules.addAdminsModules"/>
+  	<flushOnExecute statement="bai_admins_modules.delAdminsModules"/>  	
+  	<flushOnExecute statement="bai_roles_modules.addRolesModules"/>
+  	<flushOnExecute statement="bai_roles_modules.delRolesModules"/>
+  </cacheModel>
+
+
+  <!-- 查询 -->
+  <select id="getAdmins" resultMap="resultMap" cacheModel="cacheAdmins">
+    select *
+    from bai_admins
+	<include refid="select_where_clause" />
+	<include refid="select_sort_limit_clause" />
+  </select>
+  
+  <select id="getAdminsCount" resultClass="long" cacheModel="cacheAdminsCount">
+    select count(*)
+    from bai_admins
+	<include refid="select_where_clause" />
+  </select>
+  
+  
+  <delete id="delAdmins" >
+    update bai_admins set 
+    	username=CONCAT(username,'(',user_id,'|已删除)'),
+    	deleted=true
+    where user_id in
+	<iterate property="userIds" open="(" close=")" conjunction=",">
+		#userIds[]:INTEGER# 
+	</iterate>
+  </delete>
+
+
+  <insert id="addAdmins" parameterClass="com.baixc.ucenter.model.admin.Admins" >
+    insert into bai_admins
+    <dynamic prepend="(" >
+      <isNotNull prepend="," property="username" >
+        username
+      </isNotNull>
+      <isNotNull prepend="," property="password" >
+        password
+      </isNotNull>
+      <isNotNull prepend="," property="name" >
+        name
+      </isNotNull>
+      <isNotNull prepend="," property="code" >
+        code
+      </isNotNull>
+      <isNotNull prepend="," property="sex" >
+        sex
+      </isNotNull>
+      <isNotNull prepend="," property="dept" >
+        dept
+      </isNotNull>
+      <isNotNull prepend="," property="position" >
+        position
+      </isNotNull>
+      <isNotNull prepend="," property="mobile" >
+        mobile
+      </isNotNull>
+      <isNotNull prepend="," property="email" >
+        email
+      </isNotNull>
+      <isNotNull prepend="," property="regTime" >
+        reg_time
+      </isNotNull>
+      <isNotNull prepend="," property="updateTime" >
+        update_time
+      </isNotNull>
+      <isNotNull prepend="," property="enabled" >
+        enabled
+      </isNotNull>
+      )
+    </dynamic>
+    values
+    <dynamic prepend="(" >
+      <isNotNull prepend="," property="username" >
+        #username:VARCHAR#
+      </isNotNull>
+      <isNotNull prepend="," property="password" >
+        #password:VARCHAR#
+      </isNotNull>
+      <isNotNull prepend="," property="name" >
+        #name:VARCHAR#
+      </isNotNull>
+      <isNotNull prepend="," property="code" >
+        #code:VARCHAR#
+      </isNotNull>
+      <isNotNull prepend="," property="sex" >
+        #sex:VARCHAR#
+      </isNotNull>
+      <isNotNull prepend="," property="dept" >
+        #dept:VARCHAR#
+      </isNotNull>
+      <isNotNull prepend="," property="position" >
+        #position:VARCHAR#
+      </isNotNull>
+      <isNotNull prepend="," property="mobile" >
+        #mobile:VARCHAR#
+      </isNotNull>
+      <isNotNull prepend="," property="email" >
+        #email:VARCHAR#
+      </isNotNull>
+      <isNotNull prepend="," property="regTime" >
+        #regTime:TIMESTAMP#
+      </isNotNull>
+      <isNotNull prepend="," property="updateTime" >
+        #updateTime:TIMESTAMP#
+      </isNotNull>
+      <isNotNull prepend="," property="enabled" >
+        #enabled:TINYINT#
+      </isNotNull>
+      )
+    </dynamic>
+    <selectKey resultClass="java.lang.Integer" keyProperty="userId" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+  </insert>
+
+
+  <update id="editAdmins" parameterClass="com.baixc.ucenter.model.admin.Admins" >
+    update bai_admins
+    <dynamic prepend="set" >
+      <isNotNull prepend="," property="username" >
+        username = #username:VARCHAR#
+      </isNotNull>
+      <isNotNull prepend="," property="password" >
+        password = #password:VARCHAR#
+      </isNotNull>
+      <isNotNull prepend="," property="name" >
+        name = #name:VARCHAR#
+      </isNotNull>
+      <isNotNull prepend="," property="code" >
+        code = #code:VARCHAR#
+      </isNotNull>
+      <isNotNull prepend="," property="sex" >
+        sex = #sex:VARCHAR#
+      </isNotNull>
+      <isNotNull prepend="," property="dept" >
+        dept = #dept:VARCHAR#
+      </isNotNull>
+      <isNotNull prepend="," property="position" >
+        position = #position:VARCHAR#
+      </isNotNull>
+      <isNotNull prepend="," property="mobile" >
+        mobile = #mobile:VARCHAR#
+      </isNotNull>
+      <isNotNull prepend="," property="email" >
+        email = #email:VARCHAR#
+      </isNotNull>
+      <isNotNull prepend="," property="regTime" >
+        reg_time = #regTime:TIMESTAMP#
+      </isNotNull>
+      <isNotNull prepend="," property="updateTime" >
+        update_time = #updateTime:TIMESTAMP#
+      </isNotNull>
+      <isNotNull prepend="," property="enabled" >
+        enabled = #enabled:TINYINT#
+      </isNotNull>
+    </dynamic>
+    where user_id = #userId:INTEGER#
+  </update>
+  
+</sqlMap>

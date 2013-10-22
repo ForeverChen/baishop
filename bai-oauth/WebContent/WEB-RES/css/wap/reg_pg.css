@@ -1,0 +1,52 @@
+/*--- 头部 ---*/
+.c_head{height:80px;background:#de0000;}
+	.kdlogo{float: left;margin:10px 0 0 20px;}
+	.golink{float: right;margin-top:13px;}
+	.golink li{float: left;margin-right:9px;}
+/*--- 底部链接 ---*/
+.c_botNav{text-align: center;height:49px;line-height:49px;background:#e1e1e1;color: #b7b7b7;font-size:18px;}
+	.c_botNav .t{right:10px;top:0;width:41px;height:41px;line-height:50px;background:#929292;-moz-border-radius:0 0 10px 10px;-webkit-border-radius:0 0 10px 10px;border-radius:0 0 10px 10px;color: #fff;font-size:16px;}
+	.c_botNav .t .ic{background-position: -139px -81px;width:18px;height:10px;left:11px;top:4px;}
+/*--- 底部 ---*/
+.c_foot{background:#eee;}
+	.c_foot .go{padding:12px 0;border-top:1px solid #d5d6d8;border-bottom:1px solid #d5d6d8;box-shadow:0 1px 1px #fff inset,0 1px 1px #fff;}
+	.c_foot li{float: left;padding:12px 15px;}
+	.c_foot li img{display: block;margin:0 auto;}
+	.c_foot .l1{border-right:1px solid #d5d6d8;}
+	.c_foot .l2{border-right:1px solid #d5d6d8;border-left:1px solid #fff;}
+	.c_foot .l3{border-left:1px solid #fff;}
+	.c_foot .bot{padding:22px 0 43px 0;}
+	.c_foot .bot .tel{background-repeat:repeat-x;background-position: 0 0;width:280px;height:63px;line-height:63px;text-align: center;margin:0 auto;-moz-border-radius:10px;-webkit-border-radius:10px;border-radius:10px;font-size:24px;}
+		.c_foot .tel .s{;background-position: 0 -63px;top:15px;left:25px;width:20px;height:31px;}
+	.c_foot .bot .write{height:20px;line-height:20px;text-align: center;color: #797979;}
+
+/*--- 注册表单 ---*/
+.reg_input{padding:15px 20px 0 20px;font-size:18px;}
+	.reg_input label{display: block;margin-bottom:20px;}
+	.reg_input .last{margin-bottom:30px;}
+	.reg_input label span,.reg_input label input{display: block;margin-bottom:5px;}
+	.reg_input .tip{font-size:16px;color: #666;}
+	.reg_input .err{color: #d00;}
+	.reg_input label input{width:95%;height:38px;line-height:38px;;padding:10px;border:1px solid #ccc;outline:none;box-shadow:3px 0 5px #e1e0e1 inset, 0 3px 5px #e1e0e1 inset;-moz-border-radius:5px;-webkit-border-radius:5px;border-radius:5px;font-size:16px;}
+	.reg_input .btn{display: block;width:100%;padding:10px;background:#d40000;border: 1px solid #d00;-moz-border-radius:5px;-webkit-border-radius:5px;font-size:30px;color: #fff;}
+.loginTip{font-size:20px;margin-top:25px;text-align: center;}
+
+
+.c_goback{position: relative;display: block;background-position: 0 -1px;background-repeat:repeat-x;border-top:1px solid #fdfdfd;border-bottom:1px solid #d5d6d8;height:60px;line-height:60px;box-shadow:0 -1px 1px #fdfdfd inset;font-size:22px;text-align: center;}
+	.c_goback span{position: absolute;left:10px;top:7px;background-position: 0 -94px;width:90px;height:44px;line-height:44px;font-size:18px;text-indent:0.5em;}
+	.c_goback span s{position: relative;top:2px;left:-5px;display: inline-block;background-position:-34px -63px;width:20px;height:18px;}
+.sucess{width:315px;margin:0 auto;}
+/*--- 兼容信息 ---*/
+@media screen and (max-width:320px){
+	.res_Content{width:320px;}
+	.c_goback{text-indent:inherit;}
+/*------------*/
+	.res_head{height:65px;}
+		.res_head .kdlogo{margin:10px 0 0 10px;}
+		.res_head .kdlogo img{width:150px;}
+		.res_head .golink img{width:40px;}
+/*------------*/
+	.res_foot li img{width:75px;}
+/*------------*/
+	.c_botNav{font-size:16px;}
+}

@@ -1,0 +1,200 @@
+@CHARSET "UTF-8";
+
+.title {
+	color: #66AB16;
+	font-family: "微软雅黑","黑体","宋体","klavika-web-1","klavika-web-2",sans-serif;
+	font-size: 2.3em;
+    margin-left: -12px;
+    margin-top: -3px;
+    padding: 0 0 0.4em 2.2em;
+}
+
+.agreement {
+    border: 1px solid #CCCCCC;
+    color: #808080;
+    height: 100px;
+    margin-bottom: 10px;
+    overflow: auto;
+    padding: 0 9px;
+}
+
+.icon-cls {
+	background: url(../images/icons.png) no-repeat -3px -84px !important;
+}
+
+/*子系统*/
+.icon-sub-system {
+	background: url(../images/icons.png) no-repeat -3px -219px !important;
+}
+
+/*模块组*/
+.icon-module-group {
+	background: url(../images/icons.png) no-repeat -3px -57px !important;
+}
+
+/*模块*/
+.icon-module-app { 
+	background: url(../images/icons.png) no-repeat -3px -111px !important;
+}
+
+/*模块(大)*/
+.icon-module-app-big {
+    background: url(../images/singleton-m.png) no-repeat scroll 0 -5px transparent;
+}
+
+/*操作功能*/
+.icon-module-function {
+	background: url(../images/icons.png) no-repeat -3px -165px !important;
+}
+
+/*操作常量*/
+.icon-module-constant {
+	background: url(../images/icons.png) no-repeat -3px -245px !important;
+}
+
+
+.icon-role-root {
+	background: url(../images/icons.png) no-repeat -3px -219px !important;
+}
+
+.icon-role-group {
+	background: url(../images/icons.png) no-repeat -3px -57px !important;
+}
+
+.icon-role-leaf { 
+	background: url(../images/icons.png) no-repeat -3px -111px !important;
+}
+
+.icon-city-group {
+	background: url(../images/catalog.png) no-repeat !important;
+}
+
+.icon-city-leaf {
+	background: url(../images/icons.png) no-repeat -3px -165px !important;
+}
+
+/*主页*/
+.icon-home { 
+	background: url(../images/hotel.png) no-repeat !important;
+}
+
+/*用户*/
+.icon-user { 
+	background: url(../images/user.png) no-repeat !important;
+}
+/*添加*/
+.icon-add { 
+	background: url(../images/add.png) no-repeat !important;
+}
+/*编辑*/
+.icon-edit { 
+	background: url(../images/edit.png) no-repeat !important;
+}
+/*删除*/
+.icon-del { 
+	background: url(../images/delete.png) no-repeat !important;
+}
+/*保存*/
+.icon-save { 
+	background: url(../images/save.png) no-repeat !important;
+}
+/*设置*/
+.icon-set { 
+	background: url(../images/cog.png) no-repeat !important;
+}
+/*停止*/
+.icon-stop { 
+	background: url(../images/stop.png) no-repeat !important;
+}
+/*向上*/
+.icon-up { 
+	background: url(../images/up.png) no-repeat !important;
+}
+/*向下*/
+.icon-down { 
+	background: url(../images/down.png) no-repeat !important;
+}
+/*查询*/
+.icon-search { 
+	background: url(../images/search.png) no-repeat !important;
+}
+/*帮助*/
+.icon-help {
+	background: url(../images/help.png) no-repeat !important;
+}
+/*打印*/
+.icon-print { 
+	background: url(../images/print.png) no-repeat !important;
+}
+/*提取*/
+.icon-hand { 
+	background: url(../images/hand.png) no-repeat !important;
+}
+/*导出*/
+.icon-export { 
+	background: url(../images/export.png) no-repeat !important;
+}
+/*解绑*/
+.icon-remove { 
+	background: url(../images/remove.png) no-repeat !important;
+}
+/*核对*/
+.icon-check{ 
+	background: url(../images/accept.png) no-repeat !important;
+}
+/*收货*/
+.icon-receive{ 
+	background: url(../images/receive.png) no-repeat !important;
+}
+/*统计*/
+.icon-statistics{ 
+	background: url(../images/statistics.png) no-repeat !important;
+}
+/*锁定*/
+.icon-lock{ 
+	background: url(../images/lock.png) no-repeat !important;
+}
+/*报警*/
+.icon-alarm{ 
+	background: url(../images/alarm.png) no-repeat !important;
+}
+/*取消*/
+.icon-cancel{ 
+	background: url(../images/cancel.png) no-repeat !important;
+}
+/*查看*/
+.icon-view{ 
+	background: url(../images/checkininfo.png) no-repeat !important;
+}
+/*还原*/
+.icon-redo{ 
+	background: url(../images/redo.png) no-repeat !important;
+}
+/*拆分*/
+.icon-split{ 
+	background: url(../images/split.png) no-repeat !important;
+}
+
+
+
+
+/*---------------------------------------------------------------以下是对extjs样式的优化----------------------------------------------------------------*/
+
+/*在火狐下字体过小补丁样式*/
+.x-btn-default-small .x-btn-inner,.x-btn-default-medium .x-btn-inner,.x-btn-default-large .x-btn-inner,.x-btn-default-toolbar-small .x-btn-inner,.x-btn-default-toolbar-medium .x-btn-inner,.x-btn-default-toolbar-large .x-btn-inner,.x-menu-item-text,.x-html-editor-tb .x-font-select,.x-panel-header-default,.x-panel-header-text-default,.x-panel-header-default-framed,.x-tip-header,.x-tip-body,.x-form-invalid-tip-body,.x-tip-header-text,.x-progress-text,.x-toolbar,.x-toolbar .x-form-item-label,.x-toolbar .x-toolbar-text,.x-window-header-text-default,.x-tab-bar,.x-tab button,.x-grid-rowbody,.x-grid-row .x-grid-cell,.x-grid-group-title,.x-grid-row-editor .x-form-field,.x-grid-row-editor .x-form-display-field,.x-form-invalid-under,.x-fieldset-header,.x-column-header,.x-mask-msg div,.x-btn-group-header-text-default-framed,table.x-datepicker-inner a,.x-monthpicker-item,.x-dd-drag-ghost {
+	font-size: 12px;
+}
+
+.x-tab button {
+	font-size: 13px;
+}
+
+.x-column-header {
+	text-shadow: 0 0 0 rgba(255, 255, 255, 0.3);
+}
+
+/*允许extjs复制*/
+.x-selectable,.x-selectable * {
+	-moz-user-select: text !important;
+	-khtml-user-select: text !important;
+}

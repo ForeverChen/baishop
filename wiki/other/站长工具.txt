@@ -1,0 +1,49 @@
+Pg3Ed7Ej2gt5
+
+
+#前台
+bai-shop
+bai-mobile
+bai-oauth
+#后台
+bai-cas
+bai-ass
+bai-erp
+bai-crm
+#服务/框架
+bai-solr
+bai-dubbo
+bai-service
+bai-framework
+#BI/数据仓库/数据挖掘
+SQL Server 2008 + Excel 透视表
+
+
+
+服务器监控                       Nagios
+原型设计软件			Axure RP Pro6
+项目管理和缺陷跟踪		Redmine、JIRA
+持续集成引擎			Hudson、nexus
+压力测试工具			LoadRunne
+抓包工具				Fidder
+网站流量统计			CNZZ、百度统计、Google Analytics、51la、量子恒道
+漏洞报告平台			http://www.wooyun.org/index.php
+内容分享工具			百度分享
+网站信任工具			google信任、QQ信任
+https安全证书			http://www.startssl.com/
+推荐工具				百分点推荐
+SVN管理服务工具            uberSVN  
+网络字体服务			https://typekit.com/
+firefox开发插件		firebug,firecookie,Page Speed
+优秀开源网站    		ECShop，DiscuzX
+
+
+
+卡当网企业版QQ空间，腾讯微薄微空间、微卖场，新浪微薄企业版全部上线啦！欢迎各位童鞋组团围观！
+通过近期的维护，本月已经带来成功订单40个 
+ 
+企业空间地址：http://user.qzone.qq.com/706290410 
+腾讯微薄微空间地址：http://t.qq.com/kadang?tab=main 
+新浪微薄地址：http://weibo.com/kadang 
+ 
+ 大家平时看见卡当的动态可以一起响应哦，轻轻一点“转发”按钮，同时也欢迎各路微薄控豪杰们进行点评，提出意见和建议！

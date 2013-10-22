@@ -1,0 +1,91 @@
+<?xml version="1.0"?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+<!-- /** * Copyright 2010 The Apache Software Foundation * * Licensed to 
+	the Apache Software Foundation (ASF) under one * or more contributor license 
+	agreements. See the NOTICE file * distributed with this work for additional 
+	information * regarding copyright ownership. The ASF licenses this file * 
+	to you under the Apache License, Version 2.0 (the * "License"); you may not 
+	use this file except in compliance * with the License. You may obtain a copy 
+	of the License at * * http://www.apache.org/licenses/LICENSE-2.0 * * Unless 
+	required by applicable law or agreed to in writing, software * distributed 
+	under the License is distributed on an "AS IS" BASIS, * WITHOUT WARRANTIES 
+	OR CONDITIONS OF ANY KIND, either express or implied. * See the License for 
+	the specific language governing permissions and * limitations under the License. 
+	*/ -->
+<configuration>
+	<property>
+		<name>hbase.rootdir</name>
+		<value>hdfs://hmaster:9000/hbase</value>
+	</property>
+	<property>
+		<name>hbase.cluster.distributed</name>
+		<value>true</value>
+	</property>
+	<property>
+		<name>hbase.master</name>
+		<value>hmaster:60000</value>
+	</property>
+	<property>
+		<name>dfs.support.append</name>
+		<value>true</value>
+	</property>
+	<property>
+		<name>hbase.tmp.dir</name>
+		<value>/home/hadoop/tmp/hbase</value>
+	</property>
+
+	<!--optimization -->
+	<property>
+		<name>hbase.regionserver.lease.period</name>
+		<value>600000</value>
+		<description>
+			HRegion server lease period in milliseconds. Default is
+			60 seconds. Clients must report in within this period else they are
+			considered dead.
+		</description>
+	</property>
+	<property>
+		<name>hbase.regionserver.handler.count</name>
+		<value>100</value>
+		<description>
+			Count of RPC Listener instances spun up on RegionServers.
+			Same property is used by the Master for count of master handlers.
+			Default is 10.
+		</description>
+	</property>
+	<property>
+		<name>hfile.block.cache.size</name>
+		<value>0.4</value>
+		<description>
+			Percentage of maximum heap (-Xmx setting) to allocate to
+			block cache
+			used by HFile/StoreFile. Default of 0.25 means allocate
+			25%.
+			Set to 0 to disable but it's not recommended.
+		</description>
+	</property>
+	<property>
+		<name>hbase.regionserver.global.memstore.upperLimit</name>
+		<value>0.35</value>
+		<description>
+			Maximum size of all memstores in a region server before
+			new updates are blocked and flushes are forced. Defaults to 40% of
+			heap
+		</description>
+	</property>
+	<property>
+		<name>hbase.regionserver.global.memstore.lowerLimit</name>
+		<value>0.3</value>
+		<description>
+			When memstores are being forced to flush to make room in
+			memory, keep flushing until we hit this mark. Defaults to 35% of
+			heap.
+			This value equal to
+			hbase.regionserver.global.memstore.upperLimit causes
+			the minimum
+			possible flushing to occur when updates are blocked due
+			to memstore
+			limiting.
+		</description>
+	</property>
+</configuration>
