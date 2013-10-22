@@ -3,5 +3,6 @@
     <wb-module deploy-name="bai-srv-shopping">
         <wb-resource deploy-path="/" source-path="/src-service"/>
         <wb-resource deploy-path="/" source-path="/src-dao"/>
+        <wb-resource deploy-path="/" source-path="/src-test"/>
     </wb-module>
 </project-modules>
