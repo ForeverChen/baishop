@@ -6,7 +6,6 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
-import org.springframework.dao.DuplicateKeyException;
 import org.springframework.orm.ibatis.SqlMapClientTemplate;
 
 import com.alibaba.dubbo.rpc.RpcException;
@@ -19,45 +18,65 @@ public class EnumsServiceImpl extends BaseService implements EnumsService {
 	private static final long serialVersionUID = 6431588222617603394L;
 
 	@Resource
-	protected SqlMapClientTemplate sqlMapClientCommons;
+	protected SqlMapClientTemplate sqlMapClientAss;
 
 	@Override
-	public Enums getEnums(int enumsId) {
-		try{
-			Map<String,Object> params = new HashMap<String,Object>();
-			params.put("enumsId", enumsId);
-			Enums obj = (Enums)this.sqlMapClientCommons.queryForObject("bai_enums.getEnums", params);
-			return obj;
-		}catch(Exception e){
-			throw new RpcException("查询系统枚举出错", e);
-		}
+	public Enums getEnums(String key) {
+		return this.getEnums("", key);
 	}
 
 	@Override
-	public Enums getEnums(String enumsType, String enumsName) {
-		try{
-			Map<String,Object> params = new HashMap<String,Object>();
-			params.put("enumsType", enumsType);
-			params.put("enumsName", enumsName);
-			Enums obj = (Enums)this.sqlMapClientCommons.queryForObject("bai_enums.getEnums", params);
-			return obj;
-		}catch(Exception e){
-			throw new RpcException("查询系统枚举出错", e);
-		}
+	public Enums getEnums(String group, String key) {
+		return this.getEnumsByBiz("", group, key);
 	}
 
 	@Override
-	public List<Enums> getEnumsList() {
-		return this.getEnumsList(new HashMap<String,Object>());
+	public Enums getEnumsByBiz(String biz, String key) {
+		return this.getEnumsByBiz(biz, "", key);
 	}
 
 	@Override
-	public List<Enums> getEnumsList(String enumsType) {
-		Map<String,Object> params = new HashMap<String,Object>();
-		params.put("enumsType", enumsType);
+	public Enums getEnumsByBiz(String biz, String group, String key) {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("biz", biz);
+		params.put("group", group);
+		params.put("key", key);
+		
+		List<Enums> list = this.getEnumsList(params);
+		if(list.size()>0)
+			return list.get(0);
+		else
+			return null;
+		
+	}
 
-		List<Enums> list = this.getEnumsList(params);		
+	@Override
+	public List<Enums> getEnumsGroup(String group) {
+		return this.getEnumsGroupByBiz("", group);
+	}
+
+	@Override
+	public List<Enums> getEnumsGroupByBiz(String biz, String group) {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("biz", biz);
+		params.put("group", group);
+		
+		List<Enums> list = this.getEnumsList(params);
 		return list;
+	}
+	
+	
+
+	@Override
+	public Enums getEnums(int id) {
+		try{
+			Map<String,Object> params = new HashMap<String,Object>();
+			params.put("id", id);
+			Enums obj = (Enums)this.sqlMapClientAss.queryForObject("bai_enums.getEnums", params);
+			return obj;
+		}catch(Exception e){
+			throw new RpcException("查询枚举出错", e);
+		}
 	}
 	
 	@Override
@@ -67,48 +86,44 @@ public class EnumsServiceImpl extends BaseService implements EnumsService {
 				params = new HashMap<String,Object>();
 			
 			@SuppressWarnings("unchecked")
-			List<Enums> list = this.sqlMapClientCommons.queryForList("bai_enums.getEnums", params);
+			List<Enums> list = this.sqlMapClientAss.queryForList("bai_enums.getEnums", params);
 			return list;
 		}catch(Exception e){
-			throw new RpcException("查询系统枚举出错", e);
+			throw new RpcException("查询枚举出错", e);
 		}
 	}
 
 	@Override
-	public void delEnums(int enumsId) {
-		this.delEnums(new int[]{enumsId});
+	public void delEnums(int id) {
+		this.delEnums(new int[]{id});
 	}
 
 	@Override
-	public void delEnums(int[] enumsIds) {
+	public void delEnums(int[] ids) {
 		try{
-			this.sqlMapClientCommons.delete("bai_enums.delEnums", enumsIds);
+			this.sqlMapClientAss.delete("bai_enums.delEnums", ids);
 		}catch(Exception e){
-			throw new RpcException("删除系统枚举出错", e);
+			throw new RpcException("删除枚举出错", e);
 		}
 	}
 
 	@Override
 	public void addEnums(Enums enums) {
 		try{
-			this.sqlMapClientCommons.insert("bai_enums.addEnums", enums);
+			this.sqlMapClientAss.insert("bai_enums.addEnums", enums);
 
-        }catch(DuplicateKeyException e){
-			throw new RpcException("枚举类型与枚举码重复", e);	
         } catch (Exception e) {
-			throw new RpcException("添加系统枚举出错", e);
+			throw new RpcException("添加枚举出错", e);
 		}
 	}
 
 	@Override
 	public void editEnums(Enums enums) {
 		try{
-			this.sqlMapClientCommons.update("bai_enums.editEnums", enums);
+			this.sqlMapClientAss.update("bai_enums.editEnums", enums);
 
-        }catch(DuplicateKeyException e){
-			throw new RpcException("枚举类型与枚举码重复", e);	
         } catch (Exception e) {
-			throw new RpcException("编辑系统枚举出错", e);
+			throw new RpcException("编辑枚举出错", e);
 		}
 	}
 

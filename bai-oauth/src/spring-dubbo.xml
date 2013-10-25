@@ -9,7 +9,7 @@
         ">
  
     <!-- 消费方应用名，用于计算依赖关系，不是匹配条件，不要与提供方一样 -->
-	<dubbo:application name="kwp-oauth-consumer" owner="linpn" />
+	<dubbo:application name="bai-oauth-consumer" owner="linpn" />
  
 	<!-- 注册中心 -->
 	<dubbo:registry address="${dubbo.registry.address}" />

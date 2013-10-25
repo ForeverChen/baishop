@@ -75,8 +75,4 @@
 	<bean name="/configcenter/SysEnums.jspx" class="com.baixc.ass.web.configcenter.SysEnums">
 	</bean>
 	
-	<!-- 系统参数 -->
-	<bean name="/configcenter/SysParams.jspx" class="com.baixc.ass.web.configcenter.SysParams">
-	</bean>
-	
 </beans>

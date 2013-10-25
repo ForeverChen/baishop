@@ -6,23 +6,28 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Resource;
+
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 import org.springframework.web.servlet.ModelAndView;
 
 import com.baixc.commons.model.configcenter.Enums;
+import com.baixc.commons.service.configcenter.EnumsService;
 import com.baixc.framework.utils.ConvertUtils;
 import com.baixc.framework.web.HttpServletExtendRequest;
 import com.baixc.framework.web.HttpServletExtendResponse;
 import com.baixc.ucenter.web.controller.PageAdmController;
 
 public class SysEnums extends PageAdmController {
+	
+	@Resource
+	private EnumsService enumsService;
 
 	@Override
 	public void execute(HttpServletExtendRequest request,
-			HttpServletExtendResponse response, ModelAndView modeview) {
-	
+			HttpServletExtendResponse response, ModelAndView modeview) {	
 	}
 	
 
@@ -78,7 +83,7 @@ public class SysEnums extends PageAdmController {
 			//创建对象
 			Enums enums = request.getBindObject(Enums.class, "enums");
 			
-			if(enums.getEnumsId()==null){
+			if(enums.getId()==null){
 				//添加对象
 				enumsService.addEnums(enums);
 			}else{

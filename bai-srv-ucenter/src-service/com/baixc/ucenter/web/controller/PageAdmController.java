@@ -23,8 +23,6 @@ import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.alibaba.dubbo.rpc.RpcException;
-import com.baixc.commons.service.configcenter.EnumsService;
-import com.baixc.commons.service.configcenter.ParamsService;
 import com.baixc.framework.json.JsonGlobal;
 import com.baixc.framework.utils.TreeRecursiveHandle;
 import com.baixc.framework.web.HttpServletExtendRequest;
@@ -62,12 +60,6 @@ public abstract class PageAdmController extends BaseController {
 	/** 应用模块服务类 */
 	@Resource
 	protected ModulesService modulesService;
-	/** 系统参数服务类 */
-	@Resource
-	protected ParamsService paramsService;	
-	/** 系统枚举服务类 */
-	@Resource
-	protected EnumsService enumsService;
 
 	/** 加密对象 */
 	protected final Md5PasswordEncoder md5 = new Md5PasswordEncoder();

@@ -7,58 +7,88 @@ import java.util.Map;
 import com.baixc.commons.model.configcenter.Enums;
 
 /**
- * 系统枚举服务接口
+ * 枚举服务接口
  * @author Linpn
  */
 public interface EnumsService extends Serializable {
+	
+	/**
+	 * 获取通用业务群的 单元素枚举(K-V)
+	 * @param key 枚举键
+	 * @return 返回 单元素枚举(K-V)
+	 */
+	public Enums getEnums(String key);
+	
+	/**
+	 * 获取通用业务群的 多元素枚举(组)中的元素
+	 * @param group 枚举分组; 为空表示单元素枚举(K-V)，不为空表示多元素枚举(组)
+	 * @param key 枚举键
+	 * @return 返回 多元素枚举(组)中的元素
+	 */
+	public Enums getEnums(String group, String key);
 
 	/**
-	 * 获取枚举
-	 * @param enumsId 枚举ID
-	 * @return 返回枚举对象
+	 * 获取指定业务群的 单元素枚举(K-V)
+	 * @param biz 系统业务群; 为空表示默认(通用)业务群
+	 * @param key 枚举键
+	 * @return 返回 单元素枚举(K-V)
 	 */
-	public Enums getEnums(int enumsId); 
+	public Enums getEnumsByBiz(String biz, String key);
+	
+	/**
+	 * 获取指定业务群的 多元素枚举(组)中的元素
+	 * @param biz 系统业务群; 为空表示默认(通用)业务群
+	 * @param group 枚举分组; 为空表示单元素枚举(K-V)，不为空表示多元素枚举(组)
+	 * @param key 枚举键
+	 * @return 返回 多元素枚举(组)中的元素
+	 */
+	public Enums getEnumsByBiz(String biz, String group, String key);
+	
+	
+	/**
+	 * 获取通用业务群的 多元素枚举(组)
+	 * @param group 枚举分组; 为空表示单元素枚举(K-V)，不为空表示多元素枚举(组)
+	 * @return 返回 多元素枚举(组)
+	 */
+	public List<Enums> getEnumsGroup(String group);
+
+	/**
+	 * 获取指定业务群的 多元素枚举(组)
+	 * @param biz 系统业务群; 为空表示默认(通用)业务群
+	 * @param group 枚举分组; 为空表示单元素枚举(K-V)，不为空表示多元素枚举(组)
+	 * @return 返回 多元素枚举(组)
+	 */
+	public List<Enums> getEnumsGroupByBiz(String biz, String group);
+	
+	
+	
 	
 	/**
 	 * 获取枚举
-	 * @param enumsType 枚举类型
-	 * @param enumsCode 枚举码
+	 * @param id 枚举ID
 	 * @return 返回枚举对象
 	 */
-	public Enums getEnums(String enumsType, String enumsCode); 	
-	
-	/**
-	 * 获取枚举列表
-	 * @return 返回枚举列表
-	 */
-	public List<Enums> getEnumsList();
-	
-	/**
-	 * 获取枚举列表
-	 * @param enumsType 枚举类型
-	 * @return 返回枚举列表
-	 */
-	public List<Enums> getEnumsList(String enumsType);
+	public Enums getEnums(int id);
 	
 	/**
 	 * 获取枚举列表
 	 * @param params 查询参数
-	 * @param sorters 记录的排序，如sorters.put("id","desc")，该参数如果为空表示按默认排序
 	 * @return 返回枚举列表
 	 */
 	public List<Enums> getEnumsList(Map<String,Object> params);
 	
-	/**
-	 * 删除枚举
-	 * @param enumsId 枚举ID
-	 */
-	public void delEnums(int enumsId);
 	
 	/**
 	 * 删除枚举
-	 * @param enumsIds 参数ID列表
+	 * @param id 枚举ID
 	 */
-	public void delEnums(int[] enumsIds);
+	public void delEnums(int id);
+	
+	/**
+	 * 删除枚举
+	 * @param ids 参数ID列表
+	 */
+	public void delEnums(int[] ids);
 	
 	/**
 	 * 添加枚举

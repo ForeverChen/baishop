@@ -24,7 +24,7 @@
 	</properties>
 	<build>
 		<finalName>oauth</finalName>
-		<sourceDirectory>src-web</sourceDirectory>
+		<sourceDirectory>src</sourceDirectory>
 		<outputDirectory>WebContent/WEB-INF/classes</outputDirectory>
 		<plugins>
 			<plugin>

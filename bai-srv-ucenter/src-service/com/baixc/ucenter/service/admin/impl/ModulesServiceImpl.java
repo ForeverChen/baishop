@@ -30,7 +30,7 @@ public class ModulesServiceImpl extends BaseService implements ModulesService {
 	private static final long serialVersionUID = 2218426418456488310L;
 
 	@Resource
-	protected SqlMapClientTemplate sqlMapClientAdmin;
+	protected SqlMapClientTemplate sqlMapClientAss;
 	
 	@Resource
 	private AdminsService adminsService;
@@ -45,7 +45,7 @@ public class ModulesServiceImpl extends BaseService implements ModulesService {
 		try{
 			Map<String,Object> params = new HashMap<String,Object>();
 			params.put("moduleId", moduleId);
-			Modules module = (Modules)this.sqlMapClientAdmin.queryForObject("bai_modules.getModules", params);
+			Modules module = (Modules)this.sqlMapClientAss.queryForObject("bai_modules.getModules", params);
 			return module;
 		}catch(Exception e){
 			throw new RpcException("查询模块出错", e);
@@ -58,7 +58,7 @@ public class ModulesServiceImpl extends BaseService implements ModulesService {
 		try{
 			Map<String,Object> params = new HashMap<String,Object>();
 			params.put("text", text);
-			List<Modules> list = this.sqlMapClientAdmin.queryForList("bai_modules.getModules", params);
+			List<Modules> list = this.sqlMapClientAss.queryForList("bai_modules.getModules", params);
 			if(list!=null && list.size()>0)
 				return list.get(0);
 			else
@@ -75,7 +75,7 @@ public class ModulesServiceImpl extends BaseService implements ModulesService {
 		try{
 			Map<String,Object> params = new HashMap<String,Object>();
 			params.put("code", code);
-			List<Modules> list = this.sqlMapClientAdmin.queryForList("bai_modules.getModules", params);
+			List<Modules> list = this.sqlMapClientAss.queryForList("bai_modules.getModules", params);
 			if(list!=null && list.size()>0)
 				return list.get(0);
 			else
@@ -91,7 +91,7 @@ public class ModulesServiceImpl extends BaseService implements ModulesService {
 		try{
 			Map<String,Object> params = new HashMap<String,Object>();
 			params.put("url", url);
-			List<Modules> list = this.sqlMapClientAdmin.queryForList("bai_modules.getModules", params);
+			List<Modules> list = this.sqlMapClientAss.queryForList("bai_modules.getModules", params);
 			for(Modules module : list){
 				if(module.getUrl().trim().equals(url.trim()))
 					return module;
@@ -113,7 +113,7 @@ public class ModulesServiceImpl extends BaseService implements ModulesService {
 	public List<Modules> getModulesList(Map<String,Object> params) {
 		try{
 			@SuppressWarnings("unchecked")
-			List<Modules> list = this.sqlMapClientAdmin.queryForList("bai_modules.getModules", params);
+			List<Modules> list = this.sqlMapClientAss.queryForList("bai_modules.getModules", params);
 			return list;			
 		}catch(Exception e){
 			throw new RpcException("查询模块出错", e);
@@ -202,8 +202,8 @@ public class ModulesServiceImpl extends BaseService implements ModulesService {
 			Map<String,Object> params = new HashMap<String,Object>();
 			params.put("moduleIds", moduleIds);
 			
-			this.sqlMapClientAdmin.delete("bai_modules.delModules", params);
-			this.sqlMapClientAdmin.delete("bai_roles_modules.delRolesModules", params);
+			this.sqlMapClientAss.delete("bai_modules.delModules", params);
+			this.sqlMapClientAss.delete("bai_roles_modules.delRolesModules", params);
 		}catch(Exception e){
 			throw new RpcException("删除模块失败", e);
 		}
@@ -214,12 +214,12 @@ public class ModulesServiceImpl extends BaseService implements ModulesService {
 	@Transactional
 	public int addModules(Modules modules) {
 		try{
-			int moduleId = (Integer)this.sqlMapClientAdmin.insert("bai_modules.addModules", modules);
+			int moduleId = (Integer)this.sqlMapClientAss.insert("bai_modules.addModules", modules);
 			
 			//更新排序
 			modules.setModuleId(moduleId);
 			modules.setSort(Integer.valueOf(modules.getModulePid().toString() + moduleId));
-			this.sqlMapClientAdmin.update("bai_modules.editModules", modules);
+			this.sqlMapClientAss.update("bai_modules.editModules", modules);
 			
 			return moduleId;
 			
@@ -234,7 +234,7 @@ public class ModulesServiceImpl extends BaseService implements ModulesService {
 	@Transactional
 	public int editModules(Modules modules) {
 		try{
-			return this.sqlMapClientAdmin.update("bai_modules.editModules", modules);
+			return this.sqlMapClientAss.update("bai_modules.editModules", modules);
 
         }catch(DuplicateKeyException e){
 			throw new RpcException("模块名称或编号重复", e);
