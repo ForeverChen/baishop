@@ -25,7 +25,7 @@
 	<!-- =================================数据库================================= -->	
 
 	<!--SqlMapClient模版类  --> 
-	<bean id="sqlMapClientCommons" class="org.springframework.orm.ibatis.SqlMapClientTemplate">
+	<bean id="sqlMapClientAss" class="org.springframework.orm.ibatis.SqlMapClientTemplate">
 		<property name="sqlMapClient">
 			<bean class="org.springframework.orm.ibatis.SqlMapClientFactoryBean">
 				<property name="configLocation">

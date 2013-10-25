@@ -30,14 +30,14 @@ public class RolesServiceImpl extends BaseService implements RolesService {
 	private static final long serialVersionUID = -6044363077079748792L;
 
 	@Resource
-	protected SqlMapClientTemplate sqlMapClientAdmin;
+	protected SqlMapClientTemplate sqlMapClientAss;
 	
 	@Override
 	public Roles getRoles(int roleId) {
 		try {
 			Map<String, Object> params = new HashMap<String, Object>();
 			params.put("roleId", roleId);
-			Roles role = (Roles) this.sqlMapClientAdmin.queryForObject("bai_roles.getRoles", params);
+			Roles role = (Roles) this.sqlMapClientAss.queryForObject("bai_roles.getRoles", params);
 			return role;
 		} catch (Exception e) {
 			throw new RpcException("查询角色出错", e);
@@ -49,7 +49,7 @@ public class RolesServiceImpl extends BaseService implements RolesService {
 		try {
 			Map<String, Object> params = new HashMap<String, Object>();
 			params.put("roleName", roleName);
-			Roles role = (Roles) this.sqlMapClientAdmin.queryForObject("bai_roles.getRoles", params);
+			Roles role = (Roles) this.sqlMapClientAss.queryForObject("bai_roles.getRoles", params);
 			return role;
 		} catch (Exception e) {
 			throw new RpcException("查询角色出错", e);
@@ -60,7 +60,7 @@ public class RolesServiceImpl extends BaseService implements RolesService {
 	public List<Roles> getRolesList(Map<String, Object> params) {
 		try {
 			@SuppressWarnings("unchecked")
-			List<Roles> list = this.sqlMapClientAdmin.queryForList("bai_roles.getRoles", params);
+			List<Roles> list = this.sqlMapClientAss.queryForList("bai_roles.getRoles", params);
 			return list;
 		} catch (Exception e) {
 			throw new RpcException("查询角色出错", e);
@@ -97,9 +97,9 @@ public class RolesServiceImpl extends BaseService implements RolesService {
 			Map<String, Object> params = new HashMap<String, Object>();
 			params.put("roleIds", roleIds);
 
-			this.sqlMapClientAdmin.delete("bai_roles.delRoles", params);
-			this.sqlMapClientAdmin.delete("bai_admins_roles.delAdminsRoles",params);
-			this.sqlMapClientAdmin.delete("bai_roles_modules.delRolesModules", params);
+			this.sqlMapClientAss.delete("bai_roles.delRoles", params);
+			this.sqlMapClientAss.delete("bai_admins_roles.delAdminsRoles",params);
+			this.sqlMapClientAss.delete("bai_roles_modules.delRolesModules", params);
 
 		} catch (Exception e) {
 			throw new RpcException("删除角色出错", e);
@@ -112,20 +112,20 @@ public class RolesServiceImpl extends BaseService implements RolesService {
 	public int addRoles(final Roles roles, boolean syncModules) {
 		try {
 			// 添加角色
-			int roleId = (Integer) this.sqlMapClientAdmin.insert("bai_roles.addRoles", roles);
+			int roleId = (Integer) this.sqlMapClientAss.insert("bai_roles.addRoles", roles);
 
 			// 更新排序
 			roles.setRoleId(roleId);
 			roles.setSort(Integer.valueOf(roles.getRolePid().toString() + roleId));
-			this.sqlMapClientAdmin.update("bai_roles.editRoles", roles);
+			this.sqlMapClientAss.update("bai_roles.editRoles", roles);
 
 			// 添加角色模块记录
 			if (syncModules) {
 				Map<String, Object> params = new HashMap<String, Object>();
 				params.put("roleIds", new int[] { roles.getRoleId() });
 
-				this.sqlMapClientAdmin.delete("bai_roles_modules.delRolesModules", params);
-				this.sqlMapClientAdmin.execute(
+				this.sqlMapClientAss.delete("bai_roles_modules.delRolesModules", params);
+				this.sqlMapClientAss.execute(
 						new SqlMapClientCallback<Integer>() {
 							@Override
 							public Integer doInSqlMapClient(SqlMapExecutor executor) throws SQLException {
@@ -157,15 +157,15 @@ public class RolesServiceImpl extends BaseService implements RolesService {
 	public int editRoles(final Roles roles, boolean syncModules) {
 		try {
 			// 编辑角色
-			int count = this.sqlMapClientAdmin.update("bai_roles.editRoles", roles);
+			int count = this.sqlMapClientAss.update("bai_roles.editRoles", roles);
 
 			// 编辑角色模块记录
 			if (syncModules) {
 				Map<String, Object> params = new HashMap<String, Object>();
 				params.put("roleIds", new int[] { roles.getRoleId() });
 
-				this.sqlMapClientAdmin.delete("bai_roles_modules.delRolesModules", params);
-				this.sqlMapClientAdmin.execute(
+				this.sqlMapClientAss.delete("bai_roles_modules.delRolesModules", params);
+				this.sqlMapClientAss.execute(
 						new SqlMapClientCallback<Integer>() {
 							@Override
 							public Integer doInSqlMapClient(SqlMapExecutor executor)throws SQLException {

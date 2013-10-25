@@ -22,7 +22,37 @@
     http://www.springmodules.org/validation/bean/validation.xsd
 	">
 	
-	<!-- =================================数据库================================= -->	
+	<!-- =================================数据库================================= -->
+
+	<!--SqlMapClient模版类  --> 
+	<bean id="sqlMapClientAss" class="org.springframework.orm.ibatis.SqlMapClientTemplate">
+		<property name="sqlMapClient">
+			<bean class="org.springframework.orm.ibatis.SqlMapClientFactoryBean">
+				<property name="configLocation">
+		    		<value>classpath:com/baixc/ucenter/dao/sqlmap-config-ass.xml</value>
+				</property> 
+				<property name="dataSource">
+					<!-- 数据源 -->
+			    	<bean class="com.atomikos.jdbc.AtomikosDataSourceBean" init-method="init" destroy-method="close">
+						<property name="uniqueResourceName" value="baixc/ucenAssdmin" />
+						<property name="xaDataSourceClassName" value="com.mysql.jdbc.jdbc2.optional.MysqlXADataSource" />
+						<property name="xaProperties">
+							<props>
+								<prop key="url">${jdbc.ass.url}</prop>
+								<prop key="user">${jdbc.ass.user}</prop>
+								<prop key="password">${jdbc.ass.password}</prop>
+							</props>
+						</property>
+						<property name="maxPoolSize">
+							<value>${jdbc.ass.maxPoolSize}</value>
+						</property>
+						<property name="minPoolSize" value="5" />
+						<property name="testQuery" value="select 1" />
+					</bean>
+				</property>       
+			</bean>
+		</property>
+	</bean>
 
 	<!--SqlMapClient模版类  --> 
 	<bean id="sqlMapClientUser" class="org.springframework.orm.ibatis.SqlMapClientTemplate">
@@ -45,36 +75,6 @@
 						</property>
 						<property name="maxPoolSize">
 							<value>${jdbc.user.maxPoolSize}</value>
-						</property>
-						<property name="minPoolSize" value="5" />
-						<property name="testQuery" value="select 1" />
-					</bean>
-				</property>       
-			</bean>
-		</property>
-	</bean>
-
-	<!--SqlMapClient模版类  --> 
-	<bean id="sqlMapClientAdmin" class="org.springframework.orm.ibatis.SqlMapClientTemplate">
-		<property name="sqlMapClient">
-			<bean class="org.springframework.orm.ibatis.SqlMapClientFactoryBean">
-				<property name="configLocation">
-		    		<value>classpath:com/baixc/ucenter/dao/sqlmap-config-admin.xml</value>
-				</property> 
-				<property name="dataSource">
-					<!-- 数据源 -->
-			    	<bean class="com.atomikos.jdbc.AtomikosDataSourceBean" init-method="init" destroy-method="close">
-						<property name="uniqueResourceName" value="baixc/ucenter/admin" />
-						<property name="xaDataSourceClassName" value="com.mysql.jdbc.jdbc2.optional.MysqlXADataSource" />
-						<property name="xaProperties">
-							<props>
-								<prop key="url">${jdbc.admin.url}</prop>
-								<prop key="user">${jdbc.admin.user}</prop>
-								<prop key="password">${jdbc.admin.password}</prop>
-							</props>
-						</property>
-						<property name="maxPoolSize">
-							<value>${jdbc.admin.maxPoolSize}</value>
 						</property>
 						<property name="minPoolSize" value="5" />
 						<property name="testQuery" value="select 1" />

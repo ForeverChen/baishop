@@ -47,7 +47,7 @@ public class AdminsServiceImpl extends BaseService implements AdminsService, Use
 	private static final long serialVersionUID = -5609524598183928386L;
 
 	@Resource
-	protected SqlMapClientTemplate sqlMapClientAdmin;
+	protected SqlMapClientTemplate sqlMapClientAss;
 	
 	@Resource
 	private RolesService rolesService;
@@ -77,7 +77,7 @@ public class AdminsServiceImpl extends BaseService implements AdminsService, Use
 		try{
 			Map<String,Object> params = new HashMap<String,Object>();
 			params.put("userId", userId);
-			Admins admin = (Admins)this.sqlMapClientAdmin.queryForObject("bai_admins.getAdmins", params);
+			Admins admin = (Admins)this.sqlMapClientAss.queryForObject("bai_admins.getAdmins", params);
 			return admin;
 		}catch(Exception e){
 			throw new RpcException("查询用户出错", e);
@@ -89,7 +89,7 @@ public class AdminsServiceImpl extends BaseService implements AdminsService, Use
 		try{
 			Map<String,Object> params = new HashMap<String,Object>();
 			params.put("username", username);
-			Admins admin = (Admins)this.sqlMapClientAdmin.queryForObject("bai_admins.getAdmins", params);
+			Admins admin = (Admins)this.sqlMapClientAss.queryForObject("bai_admins.getAdmins", params);
 			return admin;
 		}catch(Exception e){
 			throw new RpcException("查询用户出错", e);
@@ -102,7 +102,7 @@ public class AdminsServiceImpl extends BaseService implements AdminsService, Use
 			Map<String,Object> params = new HashMap<String,Object>();
 			params.put("username", username);
 			params.put("password", md5.encodePassword(password, username));
-			Admins admin = (Admins)this.sqlMapClientAdmin.queryForObject("bai_admins.getAdmins", params);
+			Admins admin = (Admins)this.sqlMapClientAss.queryForObject("bai_admins.getAdmins", params);
 			return admin;
 		}catch(Exception e){
 			throw new RpcException("查询用户出错", e);
@@ -120,7 +120,7 @@ public class AdminsServiceImpl extends BaseService implements AdminsService, Use
 			params.put("limit", limit);
 			
 			@SuppressWarnings("unchecked")
-			List<Admins> list = this.sqlMapClientAdmin.queryForList("bai_admins.getAdmins", params);
+			List<Admins> list = this.sqlMapClientAss.queryForList("bai_admins.getAdmins", params);
 			return list;
 			
 		}catch(Exception e){
@@ -131,7 +131,7 @@ public class AdminsServiceImpl extends BaseService implements AdminsService, Use
 	@Override
 	public long getAdminsCount(Map<String, Object> params) {
 		try{
-			long count = (Long)this.sqlMapClientAdmin.queryForObject("bai_admins.getAdminsCount", params);			
+			long count = (Long)this.sqlMapClientAss.queryForObject("bai_admins.getAdminsCount", params);			
 			return count;		
 		}catch(Exception e){
 			throw new RpcException("查询用户出错", e);
@@ -164,7 +164,7 @@ public class AdminsServiceImpl extends BaseService implements AdminsService, Use
 			Map<String,Object> params = new HashMap<String,Object>();
 			params.put("userIds", userIds);
 			
-			this.sqlMapClientAdmin.delete("bai_admins.delAdmins", params);
+			this.sqlMapClientAss.delete("bai_admins.delAdmins", params);
 			
 		}catch(Exception e){
 			throw new RpcException("删除用户出错", e);
@@ -182,7 +182,7 @@ public class AdminsServiceImpl extends BaseService implements AdminsService, Use
 	public int addAdmins(final Admins users, boolean syncRoles, boolean syncModules) {
 		try{
 			// 添加用户记录
-			int userId = (Integer)this.sqlMapClientAdmin.insert("bai_admins.addAdmins", users);		
+			int userId = (Integer)this.sqlMapClientAss.insert("bai_admins.addAdmins", users);		
 			users.setUserId(userId);	
 
 			Map<String,Object> params = new HashMap<String,Object>();
@@ -190,8 +190,8 @@ public class AdminsServiceImpl extends BaseService implements AdminsService, Use
 			
 			// 添加角色记录
 			if(syncRoles){
-				this.sqlMapClientAdmin.delete("bai_admins_roles.delAdminsRoles", params);
-				this.sqlMapClientAdmin.execute(new SqlMapClientCallback<Integer>(){
+				this.sqlMapClientAss.delete("bai_admins_roles.delAdminsRoles", params);
+				this.sqlMapClientAss.execute(new SqlMapClientCallback<Integer>(){
 					@Override
 					public Integer doInSqlMapClient(SqlMapExecutor executor)
 							throws SQLException {
@@ -211,8 +211,8 @@ public class AdminsServiceImpl extends BaseService implements AdminsService, Use
 
 			// 添加模块记录
 			if(syncModules){
-				this.sqlMapClientAdmin.delete("bai_admins_modules.delAdminsModules", params);
-				this.sqlMapClientAdmin.execute(new SqlMapClientCallback<Integer>(){
+				this.sqlMapClientAss.delete("bai_admins_modules.delAdminsModules", params);
+				this.sqlMapClientAss.execute(new SqlMapClientCallback<Integer>(){
 					@Override
 					public Integer doInSqlMapClient(SqlMapExecutor executor)
 							throws SQLException {
@@ -250,15 +250,15 @@ public class AdminsServiceImpl extends BaseService implements AdminsService, Use
 	public int editAdmins(final Admins users, boolean syncRoles, boolean syncModules) {
 		try{
 			// 编辑用户记录
-			int count = this.sqlMapClientAdmin.update("bai_admins.editAdmins", users);
+			int count = this.sqlMapClientAss.update("bai_admins.editAdmins", users);
 
 			Map<String,Object> params = new HashMap<String,Object>();
 			params.put("userIds", new int[]{users.getUserId()});			
 
 			// 编辑角色记录
 			if(syncRoles){
-				this.sqlMapClientAdmin.delete("bai_admins_roles.delAdminsRoles", params);
-				this.sqlMapClientAdmin.execute(new SqlMapClientCallback<Integer>(){
+				this.sqlMapClientAss.delete("bai_admins_roles.delAdminsRoles", params);
+				this.sqlMapClientAss.execute(new SqlMapClientCallback<Integer>(){
 					@Override
 					public Integer doInSqlMapClient(SqlMapExecutor executor)
 							throws SQLException {
@@ -278,8 +278,8 @@ public class AdminsServiceImpl extends BaseService implements AdminsService, Use
 			
 			// 添加模块记录
 			if(syncModules){
-				this.sqlMapClientAdmin.delete("bai_admins_modules.delAdminsModules", params);
-				this.sqlMapClientAdmin.execute(new SqlMapClientCallback<Integer>(){
+				this.sqlMapClientAss.delete("bai_admins_modules.delAdminsModules", params);
+				this.sqlMapClientAss.execute(new SqlMapClientCallback<Integer>(){
 					@Override
 					public Integer doInSqlMapClient(SqlMapExecutor executor)
 							throws SQLException {

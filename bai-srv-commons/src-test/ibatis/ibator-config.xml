@@ -2,24 +2,23 @@
 <!DOCTYPE ibatorConfiguration PUBLIC "-//Apache Software Foundation//DTD Apache iBATIS Ibator Configuration 1.0//EN" "http://ibatis.apache.org/dtd/ibator-config_1_0.dtd" >
 <ibatorConfiguration>
   <classPathEntry location="D:\Users\pinian.lpn\.m2\repository\mysql\mysql-connector-java\5.1.20\mysql-connector-java-5.1.20.jar" />
+<!--   <classPathEntry location="D:\Linpn\.m2\repository\mysql\mysql-connector-java\5.1.20\mysql-connector-java-5.1.20.jar" /> -->
   <ibatorContext id="context1">
-    <jdbcConnection driverClass="com.mysql.jdbc.Driver" connectionURL="jdbc:mysql://122.224.171.132:3306/bai_commons?useUnicode=true&amp;amp;characterEncoding=utf8&amp;amp;zeroDateTimeBehavior=convertToNull" userId="root" password="mfkjesk" />
+    <jdbcConnection driverClass="com.mysql.jdbc.Driver" connectionURL="jdbc:mysql://122.224.171.132:3306/bai_ass?useUnicode=true&amp;amp;characterEncoding=utf8&amp;amp;zeroDateTimeBehavior=convertToNull" userId="root" password="mfkjesk" />
     <javaModelGenerator targetPackage="ibatis" targetProject="bai-srv-commons/src-test" />
     <sqlMapGenerator targetPackage="ibatis" targetProject="bai-srv-commons/src-test" />
     <daoGenerator targetPackage="ibatis" targetProject="bai-srv-commons/src-test" type="GENERIC-CI" />
     
-    <!-- 
 
-    <table schema="" tableName="bai_admins" domainObjectName="Admins">
+    <table schema="" tableName="bai_enums" domainObjectName="Enums">
       <generatedKey column="id" sqlStatement="MySql" identity="true" />
     </table>
     
-    -->
 
 
-    <table schema="" tableName="bizlog_201301" domainObjectName="Bizlog">
-      <generatedKey column="id" sqlStatement="MySql" identity="true" />
-    </table>
+<!--     <table schema="" tableName="bizlog_201301" domainObjectName="Bizlog"> -->
+<!--       <generatedKey column="id" sqlStatement="MySql" identity="true" /> -->
+<!--     </table> -->
     
   </ibatorContext>
 </ibatorConfiguration>
