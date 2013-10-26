@@ -3,6 +3,18 @@
     <wb-module deploy-name="bai-adm-erpcrm">
         <wb-resource deploy-path="/" source-path="/target/m2e-wtp/web-resources"/>
         <wb-resource deploy-path="/" source-path="/WebContent" tag="defaultRootSource"/>
+<<<<<<< HEAD
+        <dependent-module archiveName="bai-srv-ucenter-1.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/bai-srv-ucenter/bai-srv-ucenter">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="bai-srv-commons-1.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/bai-srv-commons/bai-srv-commons">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="bai-framework-1.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/bai-framework/bai-framework">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+=======
+>>>>>>> branch 'master' of https://github.com/lpn520/baishop.git
         <property name="java-output-path" value="/bai-adm-erpcrm/WebContent/WEB-INF/classes"/>
         <property name="context-root" value="erpcrm"/>
     </wb-module>
